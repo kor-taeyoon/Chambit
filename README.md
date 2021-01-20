@@ -64,3 +64,11 @@
 
 
 
+
+
+#### 참고자료
+
+* http://pkban.blogspot.com/2020/06/windows10-yolo-c-library-ai-cctv-3-fire.html
+
+
+
