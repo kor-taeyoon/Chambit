@@ -68,7 +68,7 @@
 
 #### 참고자료
 ###### 실시간 영상분석
-* http://pkban.blogspot.com/2020/06/windows10-yolo-c-library-ai-cctv-3-fire.html
+* http://pkban.blogspot.com/2020/06/windows10-yolo-c-library-ai-cctv-3-fire.html YOLO 활용, 화재/연기 분석
 
 ###### 지상 촬영물 후처리
 * https://deep-learning-study.tistory.com/266 파이썬 파노라마
