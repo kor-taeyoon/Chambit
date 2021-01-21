@@ -123,7 +123,7 @@
 * 아두이노 1축 짐벌 개발기: http://blog.naver.com/PostView.nhn?blogId=123gtf&logNo=221289162607
 #### 3. 실시간 영상분석
 * YOLO 활용, 화재/연기 분석: http://pkban.blogspot.com/2020/06/windows10-yolo-c-library-ai-cctv-3-fire.html
-
+* 어떤 링크 : www.google.com
 #### 4. 지상 촬영물 후처리
 *  파이썬 파노라마: https://deep-learning-study.tistory.com/266
 ---
