@@ -120,7 +120,7 @@
 #### 1. 무인기 제어시스템 개발
 * 하버사인 GPS 기반 거리계산법(py): https://stricky.tistory.com/283
 #### 2. 짐벌 개발
-
+* 아두이노 1축 짐벌 개발기: http://blog.naver.com/PostView.nhn?blogId=123gtf&logNo=221289162607
 #### 3. 실시간 영상분석
 * YOLO 활용, 화재/연기 분석: http://pkban.blogspot.com/2020/06/windows10-yolo-c-library-ai-cctv-3-fire.html
 
