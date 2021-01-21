@@ -1,6 +1,4 @@
 
-
-김태윤바보
 #define focuser_step 0
 #define focuser_dir 0
 #define focuser_m1 0
