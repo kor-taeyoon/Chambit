@@ -59,6 +59,6 @@ while(True):
     if cv2.waitKey(10) >= 0:
        break;
 
-#윈도우 종려
+#윈도우 종
 cam.release()
 cv2.destroyWindow('CAM_Window')
