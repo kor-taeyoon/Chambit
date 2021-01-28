@@ -21,3 +21,9 @@ gray_image = cv2.imread('opencv_test/cat.jpg', 0) # 인수를 0으로 전달하�
 # gray 이미지 보기
 cv2.imshow('gray_image', gray_image)
 cv2.waitKey(0)
+
+# 흑백사진 저장하기 
+cv2.imwrite('gray_image.jpg', gray_image)
+
+
+끝 ~~~~
