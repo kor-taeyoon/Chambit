@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import glob, os
 
-# 3장의 영상을 리스트로 묶어서 반복문으로 하나하나 갖고옴 -> 무조건 하나씩 적어야 하나요
+# 4장의 이미지를 리스트로 묶어서 반복문으로 하나하나 갖고옴 -> 무조건 하나씩 적어야 하나요 한 번에는 못 쓰나 욤 ??
 img_names = ['opencv_test/lake1.png', 'opencv_test/lake2.png', 'opencv_test/lake3.png', 'opencv_test/lake4.png']
 
 # 불러온 영상을 imgs에 저장
