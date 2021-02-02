@@ -1,6 +1,6 @@
 import cv2
 
-camera port=0
+camera_port=0
 
 ramp_frames=30
 
@@ -10,15 +10,18 @@ def get_image():
     retval, im=camera.read()
     return im    
 
-for i in range(ramp frames):
+for i in range(ramp_frames):
     temp = get_image()
     print("Capturing")
 
 camera_capture=get_image()
-file="test/test.png"
-cv2.imwite(file, camera_capture)
+file="test_image.png"
+cv2.imwrite(file, camera_capture)
 
 del camera
 print("Picture taken")
+
+
+
 
 
