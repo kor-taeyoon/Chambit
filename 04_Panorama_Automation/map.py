@@ -5,8 +5,9 @@ import matplotlib.pyplot as plt
 import glob
 import os
 
+# 사진 두 장 파일에서 바로 불러와서 이어 붙이기
 
-path_dir = "C:/Users/khe06/Pictures/map/"   # 특정 디렉터리 경로를 path_dir에 저장
+path_dir = "C:/Users/khe06/Pictures/map2/"   # 특정 디렉터리 경로를 path_dir에 저장
 
 file_list = os.listdir(path_dir) # os 라이브러리의 listdir은 경로를 입력받아서 해당 경로 내부의 파일, 폴더들을 리스트 형식으로 반환.
 # 따라서 file_list라는 리스트에 경로 내부의 파일, 폴더 이름들은 원소로 대입
@@ -36,7 +37,7 @@ if status != cv2.Stitcher_OK:
     sys.exit()
     
 # 결과 영상 저장
-cv2.imwrite('map_output.jpg', stitched)
+cv2.imwrite('map2_output.png', stitched)
 
 
 
@@ -46,5 +47,6 @@ cv2.namedWindow('stitched', cv2.WINDOW_NORMAL)
 cv2.imshow('stitched',stitched)
 cv2.waitKey()
 cv2.destroyAllWindows()
+
 
 '''
