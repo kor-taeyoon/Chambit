@@ -1,6 +1,11 @@
 
 /*
-st nucleo stm32f103rb + mpu9250/6500
+platformio에서 MPU6050 by Electronic Cats 라이브러리 설치, DMP6 예제 정리본. (9250/6500)
+[env:nucleo_f103rb]
+platform = ststm32
+board = nucleo_f103rb
+framework = arduino
+lib_deps = electroniccats/MPU6050@^0.2.1
 */
 
 /*
