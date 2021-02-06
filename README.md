@@ -132,6 +132,7 @@
 * nRF24L01+ 기본 문자열 통신: https://innoaus.com/posts/20190415/
 * 라디안 <-> 오일러각: https://m.blog.naver.com/PostView.nhn?blogId=msyang59&logNo=220859527436&proxyReferer=https:%2F%2Fwww.google.com%2F
 * Quaternion Mahony AHRS: https://m.blog.naver.com/PostView.nhn?blogId=ysahn2k&logNo=221410891895&proxyReferer=https:%2F%2Fwww.google.com%2F
+* MPU 센서의 DMP 오류 : https://www.i2cdevlib.com/forums/topic/6-dmp-output-stopped-working/
 
 #### 2. 짐벌 개발
 * 아두이노 1축 짐벌 개발기: http://blog.naver.com/PostView.nhn?blogId=123gtf&logNo=221289162607
