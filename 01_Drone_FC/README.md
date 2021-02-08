@@ -3,7 +3,24 @@
 - - -
 
 ### parts
-> stm32f103rb(nucleo)
+- stm32f103rb (ST Nucleo)
+- nRF24L01 + PA + LNA (Communication module) -> https://www.hotmcu.com/nrf24l01palna-24ghz-wireless-transceiver-module-1100-meters-p-276.html
+- MPU9250 (IMU)
+- PRF-G189 (GPS) -> https://www.devicemart.co.kr/goods/view?no=1346018
+
+
+
+<br>
+
+
+- - -
+### 참고 자료
+* 하버사인 GPS 기반 거리계산법(py): https://stricky.tistory.com/283
+* nRF24L01+ 기본 문자열 통신: https://innoaus.com/posts/20190415/
+* 라디안 <-> 오일러각: https://m.blog.naver.com/PostView.nhn?blogId=msyang59&logNo=220859527436&proxyReferer=https:%2F%2Fwww.google.com%2F
+* Quaternion Mahony AHRS: https://m.blog.naver.com/PostView.nhn?blogId=ysahn2k&logNo=221410891895&proxyReferer=https:%2F%2Fwww.google.com%2F
+* MPU 센서의 DMP 오류 : https://www.i2cdevlib.com/forums/topic/6-dmp-output-stopped-working/
+* MultiWii 펌웨어 분석: https://www.slideshare.net/chcbaram/v2-48540216
 
 
 
