@@ -11,8 +11,8 @@ MISO - D12
 
 Throttle slide
 VCC   - 5V
-GND   - 
-INPUT - 
+GND   - GND
+INPUT - A0
 
 pr Joystick
 VCC  - 5v
@@ -28,14 +28,14 @@ X    - A
 Y    - A
 sw   - 
 
-Start button
-INPUT - 
+Starter button
+INPUT - D5
 
-Emergency button
-INPUT - 
+Stopper button
+INPUT - D4
 
 Buzzer
-INPUT - 
+INPUT - D9
 */
 
 #define pin_CE  8
@@ -51,8 +51,8 @@ INPUT -
 #define pin_ty_y A1
 #define pin_ty_sw 3
 
-#define pin_btn_starter 4
-#define pin_btn_stopper 5
+#define pin_btn_starter 5
+#define pin_btn_stopper 4
 
 #define pin_buzzer 9
 
@@ -62,6 +62,7 @@ INPUT -
 #include <Arduino.h>
 #include <SimpleTimer.h>
 #include <string.h>
+#include <math.h>
 
 #include <RF24.h>
 #include <SPI.h>
@@ -84,14 +85,25 @@ INPUT -
 // ========== ========== ========== ========== 
 // objects
 RF24 radio(pin_CE, pin_CSN); // CE, CSN
-SimpleTimer timer;
+SimpleTimer SignalRefresher;
 
 // nRF variables
 const byte address[6] = "00001";
 char txCommand[7] = "";
 char rxCommand[7] = "";
 
+// Joystick variables
+volatile unsigned joy_throttle = 0;
+volatile int joy_yaw = 0;
+volatile int joy_pitch = 0;
+volatile int joy_roll = 0;
 
+// Potentiometer variables
+volatile unsigned slide_throttle = 0;
+
+// Button variables
+unsigned starter_last_pressed = 0;
+unsigned stopper_last_pressed = 0;
 
 
 // ========== ========== ========== ========== ========== ========== ========== ========== 
@@ -163,7 +175,17 @@ void setup() {
 // Main Loop
 // ========== ========== ========== ========== 
 void loop() {
-    timer.run();
+    // timer loop
+    SignalRefresher.run();
+
+    // analog data refresh
+    slide_throttle = map(analogRead(pin_slide_t), 0, 1023, 34, 125);
+    //joy_throttle = map(analogRead(pin_ty_y), 0, 1023, 34, 125);
+    //joy_yaw = map(analogRead(pin_ty_x), 0, 1023, 34, 125);
+    joy_pitch = map(analogRead(pin_ty_y), 0, 1023, 34, 124);
+    joy_roll = map(analogRead(pin_ty_x), 0, 1023, 34, 124);
     
-    
+    // button processing
+
+
 }
