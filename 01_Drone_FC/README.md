@@ -14,6 +14,10 @@
 
 ### 회로 구성 및 다이어그램
 
+- Flight Controller Circuits
+![Flight Controller Circuits](https://github.com/kor-taeyoon/Chambit/blob/main/01_Drone_FC/images/FC_v1.jpg)
+
+
 - Remote Controller Circuits
 ![Remote Controller Circuits](https://github.com/kor-taeyoon/Chambit/blob/main/01_Drone_FC/images/RC_v1.jpg)
 
