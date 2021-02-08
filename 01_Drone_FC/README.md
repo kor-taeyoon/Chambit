@@ -2,15 +2,23 @@
 
 - - -
 
-### parts
+### 부품 구성
 - stm32f103rb (ST Nucleo)
 - nRF24L01 + PA + LNA (Communication module) -> https://www.hotmcu.com/nrf24l01palna-24ghz-wireless-transceiver-module-1100-meters-p-276.html
 - MPU9250 (IMU)
 - PRF-G189 (GPS) -> https://www.devicemart.co.kr/goods/view?no=1346018
 
 
-
 <br>
+
+
+### 회로 구성 및 다이어그램
+
+- Remote Controller Circuits
+![Remote Controller Circuits](./images/RC_v2.jpg)
+
+
+
 
 
 - - -
