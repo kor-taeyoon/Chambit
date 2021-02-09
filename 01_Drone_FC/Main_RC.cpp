@@ -107,11 +107,18 @@ void PotentioRefresher(){
 void ButtonChecker(){
     // Starter
     if((digitalRead(pin_btn_starter) == 0) && (millis() - starter_last_pressed > 800)){
-        strcpy(txCommand, "!!!!!~");
-        radio.write(&txCommand, sizeof(txCommand));
-        starter_last_pressed = millis();
-        timer.setTimer(20, Led_tx_blink, 2);
-        timer.setTimer(200, buzzer_bbip, 4);
+        if(slide_throttle == 34){
+            strcpy(txCommand, "!!!!!~");
+            radio.write(&txCommand, sizeof(txCommand));
+            starter_last_pressed = millis();
+            timer.setTimer(20, Led_tx_blink, 2);
+            timer.setTimer(100, buzzer_bbip, 4);
+        }
+        else{
+            timer.setTimer(100, buzzer_bbip, 8);
+        }
+        
+        
     }
 
     // Stopper
@@ -120,7 +127,7 @@ void ButtonChecker(){
         radio.write(&txCommand, sizeof(txCommand));
         stopper_last_pressed = millis();
         timer.setTimer(20, Led_tx_blink, 2);
-        timer.setTimer(200, buzzer_bbip, 6);
+        timer.setTimer(100, buzzer_bbip, 6);
     }
 }
 
