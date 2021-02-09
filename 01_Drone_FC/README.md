@@ -3,11 +3,21 @@
 - - -
 
 ### 부품 구성
-- stm32f103rb (ST Nucleo)
-- nRF24L01 + PA + LNA (Communication module) -> https://www.hotmcu.com/nrf24l01palna-24ghz-wireless-transceiver-module-1100-meters-p-276.html
-- MPU9250 (IMU)
-- PRF-G189 (GPS) -> https://www.devicemart.co.kr/goods/view?no=1346018
-- DJI E350 propulsion system -> http://dl.djicdn.com/downloads/e305/en/E305_User_Manual_v1.00_en.pdf
+- Flight Controller
+  - stm32f103rb (ST Nucleo)
+  - nRF24L01 + PA + LNA (Communication module) -> https://www.hotmcu.com/nrf24l01palna-24ghz-wireless-transceiver-module-1100-meters-p-276.html
+  - MPU9250 (IMU)
+  - PRF-G189 (GPS) -> https://www.devicemart.co.kr/goods/view?no=1346018
+  - DJI E350 propulsion system -> http://dl.djicdn.com/downloads/e305/en/E305_User_Manual_v1.00_en.pdf
+  
+- Remote Controller
+  - Arduino nano (328p, old bootloader)
+  - nRF24L01 + PA + LNA (Communication module) -> https://www.hotmcu.com/nrf24l01palna-24ghz-wireless-transceiver-module-1100-meters-p-276.html
+  - Buzzer
+  - LED (x2)
+  - Slide Potentiometer
+  - Tact Switch (x2)
+  - L7805CV (for externel bettery 
 
 <br>
 
