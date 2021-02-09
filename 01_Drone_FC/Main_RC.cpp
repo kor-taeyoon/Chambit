@@ -1,64 +1,36 @@
 
-/* Pin Mapping
-nRF24L01+
-VCC  - 3.3v
-GND  - GND
-CE   - D8
-CSN  - D10
-SCK  - D13
-MOSI - D11
-MISO - D12
-
-Throttle slide
-VCC   - 5V
-GND   - GND
-INPUT - A0
-
-pr Joystick
-VCC  - 5v
-GND  - GND
-X    - 
-Y    - 
-sw   - 
-
-ty Joystick
-VCC  - 5v
-GND  - GND
-X    - A
-Y    - A
-sw   - 
-
-Starter button
-INPUT - D5
-
-Stopper button
-INPUT - D4
-
-Buzzer
-INPUT - D9
-*/
-
+// PreFix
+// ========== ========== ========== ========== 
+// nRF24L01 Module
 #define pin_CE  8
 #define pin_CSN 10
 
+// Slide Potentiometer
 #define pin_slide_t A0
 
+// Joystick
 #define pin_pr_x A4
 #define pin_pr_y A3
 #define pin_pr_sw 2
-
 #define pin_ty_x A2
 #define pin_ty_y A1
 #define pin_ty_sw 3
 
+// Button
 #define pin_btn_starter 5
 #define pin_btn_stopper 4
 
+// Buzzer
 #define pin_buzzer 9
 
+// LED
 #define pin_led_tx 6
 #define pin_led_rx 7
 
+
+
+// Linking
+// ========== ========== ========== ========== 
 #include <Arduino.h>
 #include <SimpleTimer.h>
 #include <string.h>
@@ -70,14 +42,9 @@ INPUT - D9
 
 
 
-
-
-
 // ========== ========== ========== ========== ========== ========== ========== ========== 
 // ========== ========== ========== ========== ========== ========== ========== ========== 
 // ========== ========== ========== ========== ========== ========== ========== ========== 
-
-
 
 
 
@@ -85,12 +52,12 @@ INPUT - D9
 // ========== ========== ========== ========== 
 // objects
 RF24 radio(pin_CE, pin_CSN); // CE, CSN
-SimpleTimer SignalRefresher;
+SimpleTimer timer;
 
 // nRF variables
-const byte address[6] = "00001";
-char txCommand[7] = "";
+const byte address[6] = "01001";
 char rxCommand[7] = "";
+char txCommand[7] = "";
 
 // Joystick variables
 volatile unsigned joy_throttle = 0;
@@ -106,11 +73,10 @@ unsigned starter_last_pressed = 0;
 unsigned stopper_last_pressed = 0;
 
 
-// ========== ========== ========== ========== ========== ========== ========== ========== 
-// ========== ========== ========== ========== ========== ========== ========== ========== 
-// ========== ========== ========== ========== ========== ========== ========== ========== 
 
-
+// ========== ========== ========== ========== ========== ========== ========== ========== 
+// ========== ========== ========== ========== ========== ========== ========== ========== 
+// ========== ========== ========== ========== ========== ========== ========== ========== 
 
 
 
@@ -120,43 +86,59 @@ void buzzer_bbip(){
     digitalWrite(pin_buzzer, !digitalRead(pin_buzzer));
 }
 
-void RadioHandler(char rxCommand[]){
-    // 만약 신호가 1초 이상 끊겼다면 
+void Led_tx_blink(){
+    digitalWrite(pin_led_tx, !digitalRead(pin_led_tx));
 }
 
-void RadioSignalTransmitter(){
+void RadioSignalTransmitter(){      // 만들어진 전역변수 command를 전송.
     radio.write(&txCommand, sizeof(txCommand));
+    timer.setTimer(20, Led_tx_blink, 2);
 }
 
-void RadioSignalCatcher(){
-    if(radio.available()) {
-        radio.read(&rxCommand, sizeof(rxCommand));
-        RadioHandler(rxCommand);
-        strcpy(rxCommand, "");
-        // 마지막 명령 도착 시간 업데이트
+void PotentioRefresher(){
+    // 아날로그 값 획득, 매핑, 업데이트
+    txCommand[1] = slide_throttle = map(analogRead(pin_slide_t), 0, 1023, 34, 125);
+    //joy_throttle = map(analogRead(pin_ty_y), 0, 1023, 34, 125);
+    txCommand[2] = joy_yaw = map(analogRead(pin_ty_x), 0, 1023, 34, 125);
+    txCommand[3] = joy_pitch = map(analogRead(pin_ty_y), 0, 1023, 34, 124);
+    txCommand[4] = joy_roll = map(analogRead(pin_ty_x), 0, 1023, 34, 124);
+}
+
+void ButtonChecker(){
+    // Starter
+    if((digitalRead(pin_btn_starter) == 0) && (millis() - starter_last_pressed > 800)){
+        strcpy(txCommand, "!!!!!~");
+        radio.write(&txCommand, sizeof(txCommand));
+        starter_last_pressed = millis();
+        timer.setTimer(20, Led_tx_blink, 2);
+        timer.setTimer(200, buzzer_bbip, 4);
     }
-    // 만약 신호가 1초 이상 끊겼다면 부저 울리기 시작
+
+    // Stopper
+    if((digitalRead(pin_btn_stopper) == 0) && (millis() - stopper_last_pressed > 1200)){
+        strcpy(txCommand, "!~~~~~");
+        radio.write(&txCommand, sizeof(txCommand));
+        stopper_last_pressed = millis();
+        timer.setTimer(20, Led_tx_blink, 2);
+        timer.setTimer(200, buzzer_bbip, 6);
+    }
 }
 
 
 
-
-
 // ========== ========== ========== ========== ========== ========== ========== ========== 
 // ========== ========== ========== ========== ========== ========== ========== ========== 
 // ========== ========== ========== ========== ========== ========== ========== ========== 
-
-
 
 
 
 // Main Setup
 // ========== ========== ========== ========== 
 void setup() {
-    // nRF setting
+    // nRF tx setting
     radio.begin();
     radio.openWritingPipe(address);
-    radio.setPALevel(RF24_PA_MIN);
+    radio.setPALevel(RF24_PA_MAX);
     radio.stopListening();
 
     // pin Initializing
@@ -168,24 +150,21 @@ void setup() {
     pinMode(pin_led_tx, OUTPUT);
     pinMode(pin_led_rx, OUTPUT);
 
+    // variable initializing
+    txCommand[0] = 33;      // !
+    txCommand[5] = 126;     // ~
+
     // Timer setting
-    
+    timer.setInterval(100, RadioSignalTransmitter);
 }
 
 // Main Loop
 // ========== ========== ========== ========== 
 void loop() {
     // timer loop
-    SignalRefresher.run();
+    timer.run();
 
-    // analog data refresh
-    slide_throttle = map(analogRead(pin_slide_t), 0, 1023, 34, 125);
-    //joy_throttle = map(analogRead(pin_ty_y), 0, 1023, 34, 125);
-    //joy_yaw = map(analogRead(pin_ty_x), 0, 1023, 34, 125);
-    joy_pitch = map(analogRead(pin_ty_y), 0, 1023, 34, 124);
-    joy_roll = map(analogRead(pin_ty_x), 0, 1023, 34, 124);
-    
-    // button processing
-
-
+    // Data refresh
+    PotentioRefresher();
+    ButtonChecker();
 }
