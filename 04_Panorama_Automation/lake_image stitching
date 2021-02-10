@@ -32,3 +32,14 @@ if status != cv2.Stitcher_OK:
     
 # 결과 영상 저장
 cv2.imwrite('lake_output.jpg', stitched)
+
+
+'''
+# 출력 영상이 화면보다 커질 가능성이 있어 WINDOW_NORMAL 지정
+cv2.namedWindow('stitched', cv2.WINDOW_NORMAL)
+cv2.imshow('stitched',stitched)
+cv2.waitKey()
+cv2.destroyAllWindows()
+
+
+'''
