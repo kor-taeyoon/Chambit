@@ -1,39 +1,23 @@
 
-// Pin Mapping & PreFix
+// PreFix
 // ========== ========== ========== ========== 
-/*
-nRF24L01+
-VCC  - 3.3v
-GND  - GND
-CE   - D8
-CSN  - D10
-SCK  - D13
-MOSI - D11
-MISO - 12
+//#define DEBUG
 
-MPU9250/6500
-VCC  - 3.3v
-GND  - GND
-SCL  - D15/SCL
-SDA  - D14/SDA
-INT  - D2
+// Buzzer
+//#define pin_buzzer 0
 
-GPS (Serial2)
-VCC  - 5v
-GND  - GND
-RX   - D1
-TX   - D0
+// MPU-9250
+#define pin_mpu_INT 2
 
-Lidar
-VCC
-GND
-RX
-TX
-*/
-#define mpu_INT 2
-#define nRF_CSN 10
-#define nRF_CE 8
+// nRF24L01+
+#define pin_nRF_CE 7
+#define pin_nRF_CSN 8
 
+// GPS serial
+#define pin_gps_RX 9
+#define pin_gps_TX 10
+
+// Lidar Serial
 
 
 
@@ -42,6 +26,7 @@ TX
 #include <Arduino.h>
 #include <SimpleTimer.h>
 #include <string.h>
+#include <SoftwareSerial.h>
 
 #include "I2Cdev.h"
 #include "MPU6050_6Axis_MotionApps20.h"
@@ -51,29 +36,39 @@ TX
 #include <nRF24L01.h>
 #include <SPI.h>
 
-
+#include <TinyGPS++.h>
 
 
 
 // ========== ========== ========== ========== ========== ========== ========== ========== 
 // ========== ========== ========== ========== ========== ========== ========== ========== 
 // ========== ========== ========== ========== ========== ========== ========== ========== 
-
-
 
 
 
 // Objects
 // ========== ========== ========== ========== 
 MPU6050 mpu;
-RF24 radio(nRF_CE, nRF_CSN);
+RF24 radio(pin_nRF_CE, pin_nRF_CSN);
 SimpleTimer timer;
-
-
+SoftwareSerial gpsSerial(pin_gps_RX, pin_gps_TX);
+TinyGPSPlus gps;
 
 
 // variables
 // ========== ========== ========== ========== 
+// Most Significant variables
+int motorValidated = 0;
+float target_throttle = 0;
+float target_yaw = 0;
+float target_pitch = 0;
+float target_roll = 0;
+
+float current_throttle = 0;
+float current_yaw = 0;
+float current_pitch = 0;
+float current_roll = 0;
+
 // MPU control/status vars
 uint8_t mpuIntStatus;   // holds actual interrupt status byte from MPU
 uint8_t devStatus;      // return status after each device operation (0 = success, !0 = error)
@@ -91,13 +86,15 @@ float ypr[3];           // [yaw, pitch, roll]   yaw/pitch/roll container and gra
 volatile bool mpuInterrupt = false;     // detecting Interrupt pin's HIGH edge
 
 // Radio variables
-const byte address[6] = "00001";
-char rxCommand[8] = "";
+const byte address[6] = "01001";
+char rxCommand[7] = "";
 
 
 // GPS variables
-volatile float gps_latitude;
-volatile float gps_longtitude;
+float current_lat;
+float current_lng;
+long gps_last_updated = 0;
+int gps_load_divide = 0;
 
 // Lidar variables
 
@@ -105,32 +102,59 @@ volatile float gps_longtitude;
 // Buzzer variables
 
 
-// ========== ========== ========== ========== ========== ========== ========== ========== 
-// ========== ========== ========== ========== ========== ========== ========== ========== 
-// ========== ========== ========== ========== ========== ========== ========== ========== 
 
 
+// ========== ========== ========== ========== ========== ========== ========== ========== 
+// ========== ========== ========== ========== ========== ========== ========== ========== 
+// ========== ========== ========== ========== ========== ========== ========== ========== 
 
 
 
 // functions
 // ========== ========== ========== ========== 
+void buzzer_bbip(){
+    //digitalWrite(pin_buzzer, !digitalRead(pin_buzzer));
+}
+
 void dmpDataReady() {
     mpuInterrupt = true;
 }
 
-void RadioHandler(char rxCommand[]){
-    // 만약 신호가 1초 이상 끊겼다면 
-}
+
 
 void SerialHandler(String command){
     // if gps 
 }
 
-void RadioSignalCatcher(){
+void RadioHandler(){
+    // 들어온 신호에 이상이 있는 것
+    if(rxCommand[0] != '!' || rxCommand[5] != '~'){
+        timer.setTimer(100, buzzer_bbip, 4);
+        strcpy(rxCommand, "");
+    }
+    else{
+        //starter
+        if(!strcmp(rxCommand, "!!!!!~")){
+            motorValidated = 1;
+        }
+        // stopper
+        else if(!strcmp(rxCommand, "!~~~~~")){
+            motorValidated = 0;
+        }
+        else{
+            target_throttle = int(rxCommand[1]) - 25;
+            target_yaw = int(rxCommand[2]) - 48;
+            target_pitch = int(rxCommand[3]) - 79;
+            target_roll = int(rxCommand[4]) - 79;
+        }
+
+    }
+}
+
+void RadioSignalReceiver(){
     if(radio.available()) {
         radio.read(&rxCommand, sizeof(rxCommand));
-        RadioHandler(rxCommand);
+        RadioHandler();
         strcpy(rxCommand, "");
         // 마지막 명령 도착 시간 업데이트
     }
@@ -138,14 +162,65 @@ void RadioSignalCatcher(){
 }
 
 
+void GpsLocRefresher(){
+    if(gps.location.isValid()){
+        current_lat = gps.location.lat();
+        current_lng = gps.location.lng();
+        
+        Serial.print(current_lat, 6);
+        Serial.print("\t");
+        
+        Serial.print(current_lng, 6);
+        Serial.print("\t");
 
+        Serial.print(current_yaw, 6);
+        Serial.print("\t");
+
+        //Serial.print(current_pitch, 6);
+        //Serial.print("\t");
+
+        //Serial.print(current_roll, 6);
+        //Serial.print("\t");
+
+        //Serial.print(target_yaw, 6);
+        //Serial.print("\t");
+
+        //Serial.print(target_pitch, 6);
+        //Serial.print("\t");
+
+        //Serial.print(target_roll, 6);
+        //Serial.print("\t");
+
+        
+
+        
+        Serial.println();
+    }
+    else{
+        Serial.println("GPS not connected!");
+    }
+}
+
+void debugger(){
+    Serial.print(millis()/1000);
+    Serial.print("\t");
+
+    Serial.print(int(target_throttle));
+    Serial.print("\t");
+
+    Serial.print(int(target_pitch));
+    Serial.print("\t");
+
+    Serial.print(int(target_roll));
+    Serial.print("\t");
+
+    Serial.println();
+}
 
 
 // ========== ========== ========== ========== ========== ========== ========== ========== 
 // ========== ========== ========== ========== ========== ========== ========== ========== 
 // ========== ========== ========== ========== ========== ========== ========== ========== 
-
-
 
 
 
@@ -155,15 +230,12 @@ void setup() {
     Wire.begin();
     Wire.setClock(400000);      // 400kHz I2C
     Serial.begin(115200);       // USB UART
-    //Serial2.begin(9600);        // GPS (D0, D1)
+    gpsSerial.begin(9600);
 
-    
     radio.begin();
     radio.openReadingPipe(0, address);
     radio.setPALevel(RF24_PA_MAX);
     radio.startListening();
-
-
 
     mpu.initialize();       // initialize device
     mpu.testConnection();    // verify connection
@@ -189,7 +261,7 @@ void setup() {
         mpu.setDMPEnabled(true);
 
         // enable Arduino interrupt detection
-        attachInterrupt(digitalPinToInterrupt(mpu_INT), dmpDataReady, RISING);
+        attachInterrupt(digitalPinToInterrupt(pin_mpu_INT), dmpDataReady, RISING);
 
         // get expected DMP packet size for later comparison
         packetSize = mpu.dmpGetFIFOPacketSize();
@@ -207,7 +279,12 @@ void setup() {
     }
 
     // initialize pins
-    pinMode(mpu_INT, INPUT);
+    pinMode(pin_mpu_INT, INPUT);
+
+    // timer setup
+    //timer.setInterval(25, RadioSignalReceiver);
+    //timer.setInterval(500, GpsLocRefresher);
+    //timer.setInterval(500, debugger);
 }
 
 
@@ -220,25 +297,44 @@ void loop() {
             // try to get out of the infinite loop 
             fifoCount = mpu.getFIFOCount();
         }
-        timer.run();
-            // nRF data fresher
         
+        debugger();
+        // substantial loop
+        // ========== ========== ========== ========== 
+        // timer loop
+        //timer.run();
         
+        if(gpsSerial.available()){
+            gps.encode(gpsSerial.read());
+        }
+        if(gps.location.isValid() || millis() - gps_last_updated >=500){
+            if(gps_load_divide == 0){
+                current_lat = gps.location.lat();
+                gps_load_divide = 1;
+            }
+            else{
+                current_lng = gps.location.lng();
+                gps_load_divide = 0;
+            }
+            gps_last_updated = millis();
+        }
+        
+        if(radio.available()) {
+            radio.read(&rxCommand, sizeof(rxCommand));
+            RadioHandler();
+            strcpy(rxCommand, "");
+            // 마지막 명령 도착 시간 업데이트
+        }
+
         // USB Serial data fresher
-        if(Serial.available()){
-            String command = Serial.readStringUntil('#');
-            SerialHandler(command);
-        }
+        //if(Serial.available()){
+        //    String command = Serial.readStringUntil('#');
+        //    SerialHandler(command);
+        //}
         
-        /*
-        // GPS sensor data read, lat long out
-        if(Serial2.available()){
-            // TinyGPSPlus Api
-        }
-        */
+        
+        // ========== ========== ========== ========== 
     }
-
-
 
     // reset interrupt flag and get INT_STATUS byte
     mpuInterrupt = false;
@@ -249,7 +345,6 @@ void loop() {
 	if(fifoCount >= packetSize){
         // check overflow
         if ((mpuIntStatus & (0x01 << MPU6050_INTERRUPT_FIFO_OFLOW_BIT)) || fifoCount >= 1024) {
-            //Serial.println(F("FIFO overflow!"));
             mpu.resetFIFO(); // reset so we can continue cleanly
             return;
         }
@@ -263,17 +358,18 @@ void loop() {
             mpu.dmpGetGravity(&gravity, &q);
             mpu.dmpGetYawPitchRoll(ypr, &q, &gravity);
             
+            /*
             Serial.print("ypr\t");
             Serial.print(ypr[0] * 180/PI);      // yaw
             Serial.print("\t");
             Serial.print(ypr[1] * 180/PI);      // pitch
             Serial.print("\t");
             Serial.println(ypr[2] * 180/PI);    // roll
-            
-
+            */
+            current_yaw = ypr[0] * 180/PI;
+            current_pitch = ypr[1] * 180/PI;
+            current_roll = ypr[2] * 180/PI;
         }
     }
-
-
 
 }
