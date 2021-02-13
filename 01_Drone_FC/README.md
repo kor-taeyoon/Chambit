@@ -40,7 +40,7 @@
 * Quaternion Mahony AHRS: https://m.blog.naver.com/PostView.nhn?blogId=ysahn2k&logNo=221410891895&proxyReferer=https:%2F%2Fwww.google.com%2F
 * MPU 센서의 DMP 오류 : https://www.i2cdevlib.com/forums/topic/6-dmp-output-stopped-working/
 * MultiWii 펌웨어 분석: https://www.slideshare.net/chcbaram/v2-48540216
-
+* 자작 드론 통신시스템: https://www.youtube.com/watch?v=d_DNU1gJg6k
 
 
 
