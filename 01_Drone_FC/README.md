@@ -3,21 +3,18 @@
 - - -
 
 ### 부품 구성
-- Flight Controller
-  - stm32f103rb (ST Nucleo)
-  - nRF24L01 + PA + LNA (Communication module) -> https://www.hotmcu.com/nrf24l01palna-24ghz-wireless-transceiver-module-1100-meters-p-276.html
-  - MPU9250 (IMU)
-  - PRF-G189 (GPS) -> https://www.devicemart.co.kr/goods/view?no=1346018
-  - DJI E350 propulsion system -> http://dl.djicdn.com/downloads/e305/en/E305_User_Manual_v1.00_en.pdf
-  
-- Remote Controller
-  - Arduino nano (328p, old bootloader)
-  - nRF24L01 + PA + LNA (Communication module) -> https://www.hotmcu.com/nrf24l01palna-24ghz-wireless-transceiver-module-1100-meters-p-276.html
-  - Buzzer
-  - LED (x2)
-  - Slide Potentiometer
-  - Tact Switch (x2)
-  - L7805CV (for externel bettery 
+  - Receiver
+    - Arduino nano (328p, old bootloader)
+    - nRF24L01 + PA + LNA (Communication module) -> https://www.hotmcu.com/nrf24l01palna-24ghz-wireless-transceiver-module-1100-meters-p-276.html
+    - 25v, 10uF Capacitor
+  - Transmitter
+    - Arduino nano (328p, old bootloader)
+    - nRF24L01 + PA + LNA (Communication module) -> https://www.hotmcu.com/nrf24l01palna-24ghz-wireless-transceiver-module-1100-meters-p-276.html
+    - Buzzer
+    - LED (x2)
+    - Slide Potentiometer
+    - Tact Switch (x2)
+    - L7805CV (for externel bettery 
 
 <br>
 
@@ -25,11 +22,11 @@
 ### 회로 구성 및 다이어그램
 
 - Flight Controller Circuits
-![Flight Controller Circuits](https://github.com/kor-taeyoon/Chambit/blob/main/01_Drone_FC/images/FC_v1.jpg)
+![Flight Controller Circuits](https://github.com/kor-taeyoon/Chambit/blob/main/01_Drone_FC/imgs/Flight Controller.jpg)
 
 
 - Remote Controller Circuits
-![Remote Controller Circuits](https://github.com/kor-taeyoon/Chambit/blob/main/01_Drone_FC/images/RC_v2.jpg)
+![Remote Controller Circuits](https://github.com/kor-taeyoon/Chambit/blob/main/01_Drone_FC/imgs/Remote Controller.jpg)
 
 
 
@@ -52,6 +49,47 @@
 - - -
 
 ### 변경 사항
+2021.02/13
+- 전체적인 비행 제어 방식 변경
+  - 무인기의 자세를 추정, 교정하는 Flight Controller(이하 FC) 개발 중에, 자율 비행 구현을 위한 많은 모듈을 모두 다루기에 어려움이 있었다. 그래서 최적화가 매우 잘 되어있는 상용 FC를 통해 구성하기로 했다. 따라서 NAZA m lite FC을 도입하고, 중간의 제어 신호 통신 시스템에 개입하여 임의로 드론의 비행을 마음대로 제어할 수 있도록 하는 방식으로 수정했다.
+
+- 통신 프로토콜 변경
+  - 기존에 "시작문자+문자화된 4개의 각 축 데이터+끝문자"를 통한 패킷 구조에서, 4채널 데이터를 바이트 형식으로 구조체를 감싸, 송수신 속도 강화
+
+- 부품 구성 변경
+  - 기존의 FC를 구현하려던 방식에서, 통신 시스템에 개입하는 방식으로 변경했기 때문에 부품에 많은 차이 발생.
+    - 변경된 시스템의 부품 구성
+      - Receiver
+        - Arduino nano (328p, old bootloader)
+        - nRF24L01 + PA + LNA (Communication module) -> https://www.hotmcu.com/nrf24l01palna-24ghz-wireless-transceiver-module-1100-meters-p-276.html
+        - 25v, 10uF Capacitor
+      - Transmitter
+        - Arduino nano (328p, old bootloader)
+        - nRF24L01 + PA + LNA (Communication module) -> https://www.hotmcu.com/nrf24l01palna-24ghz-wireless-transceiver-module-1100-meters-p-276.html
+        - Buzzer
+        - LED (x2)
+        - Slide Potentiometer
+        - Tact Switch (x2)
+        - L7805CV (for externel bettery 
+
+    - 기존 시스템의 부품 구성
+      - Flight Controller
+        - stm32f103rb (ST Nucleo)
+        - nRF24L01 + PA + LNA (Communication module) -> https://www.hotmcu.com/nrf24l01palna-24ghz-wireless-transceiver-module-1100-meters-p-276.html
+        - MPU9250 (IMU)
+        - PRF-G189 (GPS) -> https://www.devicemart.co.kr/goods/view?no=1346018
+        - DJI E350 propulsion system -> http://dl.djicdn.com/downloads/e305/en/E305_User_Manual_v1.00_en.pdf
+  
+      - Remote Controller
+        - Arduino nano (328p, old bootloader)
+        - nRF24L01 + PA + LNA (Communication module) -> https://www.hotmcu.com/nrf24l01palna-24ghz-wireless-transceiver-module-1100-meters-p-276.html
+        - Buzzer
+        - LED (x2)
+        - Slide Potentiometer
+        - Tact Switch (x2)
+        - L7805CV (for externel bettery 
+
+
 2021.02/05
 - 칩셋 변경
   - vscode의 platformio를 이용한 기존 아두이노 라이브러리 이용을 위해 st nucleo stm32f103rb로 교체
