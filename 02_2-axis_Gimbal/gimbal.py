@@ -1,10 +1,4 @@
-http://www.jkelec.co.kr/img/sensors/manual/mpu6050_gy521/mpu6050_gy521_manual.html
-https://m.blog.naver.com/eduino/221081288204
 
-
-MPU-6050 : 인벤센스(invensense) 사에서 개발한 자이로, 가속도 센서,6축 자이로 가속도 센서
-
-1. 아두이노 스케치 코드 (단순히 센서의 데이터를 시리얼 데이터로 출력하는 예제)
 // MPU-6050 Accelerometer + Gyro
 // -----------------------------
 //
