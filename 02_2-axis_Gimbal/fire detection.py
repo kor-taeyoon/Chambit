@@ -1,6 +1,7 @@
 https://towardsdatascience.com/early-fire-detection-system-using-deep-learning-and-opencv-6cb60260d54a
 
 
+
 import cv2
 import numpy as np
 from PIL import Image
