@@ -22,7 +22,7 @@
 ### 회로 구성 및 다이어그램
 
 - Full Struct
-![Full Struct](https://github.com/kor-taeyoon/Chambit/blob/main/01_Drone_FC/imgs/FullStruct.jpg)
+![Full Struct](https://github.com/kor-taeyoon/Chambit/blob/main/01_Drone_FC/imgs/FullStruct_v1.jpg)
 
 
 
