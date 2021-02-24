@@ -1,0 +1,11 @@
+<!doctype html>
+<html>
+  <head>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/w3.css') }}">
+  </head>
+  <body>
+  <div class="w3-container w3-center">
+    <h2>{{ subject }}</h2>
+  </div>
+  </body>
+</html>
