@@ -65,6 +65,7 @@ kw-방범대 (광운대학교 전자통신공학과 21년도 1학기 참빛설�
     - 라디안 <-> 오일러각: https://m.blog.naver.com/PostView.nhn?blogId=msyang59&logNo=220859527436&proxyReferer=https:%2F%2Fwww.google.com%2F
     - Quaternion Mahony AHRS: https://m.blog.naver.com/PostView.nhn?blogId=ysahn2k&logNo=221410891895&proxyReferer=https:%2F%2Fwww.google.com%2F
     - MPU 센서의 DMP 오류 : https://www.i2cdevlib.com/forums/topic/6-dmp-output-stopped-working/
+    - https://papago.naver.net/website?locale=ko&source=en&target=ko&url=https%3A%2F%2Fardupilot.org%2Fplane%2Fdocs%2Fcommon-mavlink-mission-command-messages-mav_cmd.html
 
 2. 짐벌 개발
     - 아두이노 1축 짐벌 개발기: http://blog.naver.com/PostView.nhn?blogId=123gtf&logNo=221289162607
