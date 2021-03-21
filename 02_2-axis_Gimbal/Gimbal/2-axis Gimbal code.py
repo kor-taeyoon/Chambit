@@ -1,10 +1,4 @@
 2개의 서브모터 와 mpu6050 센서 코딩
-
-#include "Wire.h"
-#include "I2Cdev.h"
-#include "MPU6050.h"
-#include "Servo.h"
- 
 MPU6050 mpu;
  
 int16_t ax, ay, az;
