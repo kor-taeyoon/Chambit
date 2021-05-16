@@ -7,12 +7,14 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtSerialPort import *
 from PyQt5 import uic
+import serial
 
 # Global variables
 form_class = uic.loadUiType("GCS_test.ui")[0]
 lnt = 961192.0000000002
 lat = 1961815.9999999255
 zoom = 9
+ser = 0
 
 class WindowClass(QMainWindow, form_class):
     def __init__(self):
@@ -36,10 +38,13 @@ class WindowClass(QMainWindow, form_class):
         self.btn_stop.pressed.connect(self.func_btn_stop)
 
         self.temp_btn_refresher.pressed.connect(self.LoadSoxMap)
+        self.temp_send.pressed.connect(self.sendtest)
+
         self.btn_port_refresher.pressed.connect(self.port_refresh)
         self.table_port.cellDoubleClicked.connect(self.connect_test)
         self.table_port.setEditTriggers(QAbstractItemView.NoEditTriggers)
 
+        self.btn_stream.pressed.connect(self.stream_start)
 
 
     def LoadSoxMap(self):
@@ -55,6 +60,7 @@ class WindowClass(QMainWindow, form_class):
         lat+=200
 
 
+
     def port_refresh(self):
         self.table_port.clearContents()
         available = QtSerialPort.QSerialPortInfo().availablePorts()
@@ -67,9 +73,21 @@ class WindowClass(QMainWindow, form_class):
             cur_row+=1
 
     def connect_test(self):
-        print("port connect test")
+        global ser
+        if type(ser) == int:
+            ser = serial.Serial(self.table_port.currentItem().text(), 9600)
+            return
+        ser.close()
+        ser = serial.Serial(self.table_port.currentItem().text(), 9600)
 
-
+    def sendtest(self):
+        if type(ser) == int:
+            return
+        op = 'f'
+        op = op.encode('utf-8')
+        ser.write(op)
+        
+    
 
     def func_btn_autopilot(self):
         if(self.btn_autopilot.isChecked()):
@@ -138,8 +156,10 @@ class WindowClass(QMainWindow, form_class):
             self.btn_left.setEnabled(True)
             self.btn_right.setEnabled(True)
         #Send Emergency Stop Signal
-        
+    
 
+    def stream_start(self):
+        self.web_stream.load(QUrl("192.168.0.10:8090/?action=stream"))
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
