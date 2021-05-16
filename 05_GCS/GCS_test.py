@@ -55,7 +55,6 @@ class WindowClass(QMainWindow, form_class):
         lat+=200
 
 
-
     def port_refresh(self):
         self.table_port.clearContents()
         available = QtSerialPort.QSerialPortInfo().availablePorts()
