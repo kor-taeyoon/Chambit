@@ -23,21 +23,18 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>KW-방범대 GCS(Ground Control Station)</string>
   </property>
-  <widget class="QLabel" name="label_1">
-   <property name="geometry">
-    <rect>
-     <x>700</x>
-     <y>30</y>
-     <width>141</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Hello, world!</string>
-   </property>
-  </widget>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>icon.jpg</normaloff>icon.jpg</iconset>
+  </property>
+  <property name="layoutDirection">
+   <enum>Qt::LeftToRight</enum>
+  </property>
+  <property name="autoFillBackground">
+   <bool>false</bool>
+  </property>
   <widget class="QGroupBox" name="Controller">
    <property name="geometry">
     <rect>
@@ -171,8 +168,8 @@
   <widget class="QGroupBox" name="groupBox">
    <property name="geometry">
     <rect>
-     <x>660</x>
-     <y>70</y>
+     <x>620</x>
+     <y>10</y>
      <width>640</width>
      <height>480</height>
     </rect>
@@ -193,14 +190,27 @@
      <string/>
     </property>
    </widget>
+   <widget class="QPushButton" name="temp_btn_refresher">
+    <property name="geometry">
+     <rect>
+      <x>280</x>
+      <y>0</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>test</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QGroupBox" name="groupBox_3">
    <property name="geometry">
     <rect>
      <x>10</x>
      <y>70</y>
-     <width>640</width>
-     <height>480</height>
+     <width>550</width>
+     <height>450</height>
     </rect>
    </property>
    <property name="title">
@@ -211,7 +221,7 @@
      <rect>
       <x>20</x>
       <y>40</y>
-      <width>600</width>
+      <width>500</width>
       <height>400</height>
      </rect>
     </property>
@@ -225,8 +235,8 @@
     <rect>
      <x>10</x>
      <y>560</y>
-     <width>640</width>
-     <height>480</height>
+     <width>550</width>
+     <height>450</height>
     </rect>
    </property>
    <property name="title">
@@ -236,8 +246,8 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>40</y>
-      <width>600</width>
+      <y>30</y>
+      <width>500</width>
       <height>400</height>
      </rect>
     </property>
@@ -249,10 +259,10 @@
   <widget class="QGroupBox" name="groupBox_2">
    <property name="geometry">
     <rect>
-     <x>660</x>
-     <y>560</y>
-     <width>640</width>
-     <height>480</height>
+     <x>610</x>
+     <y>520</y>
+     <width>660</width>
+     <height>520</height>
     </rect>
    </property>
    <property name="title">
@@ -261,23 +271,23 @@
    <widget class="QWebEngineView" name="web_stream">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>50</y>
-      <width>600</width>
-      <height>400</height>
+      <x>10</x>
+      <y>30</y>
+      <width>640</width>
+      <height>480</height>
      </rect>
     </property>
     <property name="url">
      <url>
-      <string>about:blank</string>
+      <string>https://wikidocs.net/37788</string>
      </url>
     </property>
    </widget>
    <widget class="QPushButton" name="btn_stream">
     <property name="geometry">
      <rect>
-      <x>260</x>
-      <y>20</y>
+      <x>280</x>
+      <y>0</y>
       <width>111</width>
       <height>23</height>
      </rect>
@@ -286,19 +296,6 @@
      <string>Streaming Start</string>
     </property>
    </widget>
-  </widget>
-  <widget class="QPushButton" name="temp_btn_refresher">
-   <property name="geometry">
-    <rect>
-     <x>960</x>
-     <y>50</y>
-     <width>75</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>test</string>
-   </property>
   </widget>
   <widget class="QTableWidget" name="table_port">
    <property name="geometry">
@@ -407,6 +404,19 @@
    </property>
    <property name="text">
     <string>Port Refresh</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="temp_send">
+   <property name="geometry">
+    <rect>
+     <x>1560</x>
+     <y>40</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>test send</string>
    </property>
   </widget>
  </widget>
