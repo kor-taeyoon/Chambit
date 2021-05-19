@@ -168,39 +168,104 @@
   <widget class="QGroupBox" name="groupBox">
    <property name="geometry">
     <rect>
-     <x>620</x>
+     <x>600</x>
      <y>10</y>
      <width>640</width>
      <height>480</height>
     </rect>
    </property>
    <property name="title">
-    <string>GroupBox</string>
+    <string>GPS</string>
    </property>
    <widget class="QLabel" name="image_gps">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>40</y>
-      <width>600</width>
-      <height>400</height>
+      <x>0</x>
+      <y>9</y>
+      <width>640</width>
+      <height>470</height>
      </rect>
     </property>
     <property name="text">
      <string/>
     </property>
    </widget>
-   <widget class="QPushButton" name="temp_btn_refresher">
+   <widget class="QPushButton" name="btn_gps_refresh">
     <property name="geometry">
      <rect>
-      <x>280</x>
-      <y>0</y>
-      <width>75</width>
-      <height>23</height>
+      <x>600</x>
+      <y>10</y>
+      <width>41</width>
+      <height>61</height>
      </rect>
     </property>
     <property name="text">
-     <string>test</string>
+     <string>Auto</string>
+    </property>
+   </widget>
+   <widget class="QSlider" name="slide_gps_zoom">
+    <property name="geometry">
+     <rect>
+      <x>610</x>
+      <y>270</y>
+      <width>22</width>
+      <height>191</height>
+     </rect>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Vertical</enum>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_gps_right">
+    <property name="geometry">
+     <rect>
+      <x>600</x>
+      <y>200</y>
+      <width>41</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>▶</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_gps_left">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>200</y>
+      <width>41</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>◀</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_gps_down">
+    <property name="geometry">
+     <rect>
+      <x>320</x>
+      <y>440</y>
+      <width>41</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>▼</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_gps_up">
+    <property name="geometry">
+     <rect>
+      <x>320</x>
+      <y>10</y>
+      <width>41</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>▲</string>
     </property>
    </widget>
   </widget>
@@ -214,7 +279,7 @@
     </rect>
    </property>
    <property name="title">
-    <string>GroupBox</string>
+    <string>Original Captured</string>
    </property>
    <widget class="QLabel" name="image_last">
     <property name="geometry">
@@ -240,7 +305,7 @@
     </rect>
    </property>
    <property name="title">
-    <string>GroupBox</string>
+    <string>Object Detected</string>
    </property>
    <widget class="QLabel" name="image_last_detected">
     <property name="geometry">
@@ -266,7 +331,7 @@
     </rect>
    </property>
    <property name="title">
-    <string>GroupBox</string>
+    <string>Streaming</string>
    </property>
    <widget class="QWebEngineView" name="web_stream">
     <property name="geometry">
@@ -279,7 +344,7 @@
     </property>
     <property name="url">
      <url>
-      <string>https://wikidocs.net/37788</string>
+      <string>https://github.com/kor-taeyoon/Chambit</string>
      </url>
     </property>
    </widget>
