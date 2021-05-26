@@ -192,7 +192,7 @@ class WindowClass(QMainWindow, form_class):
 
     def web_gps_refresh(self):
         global lat, lnt, zoom
-        urlString = "https://maps.googleapis.com/maps/api/staticmap?center="+str(lat)+","+str(lnt)+"&zoom="+str(zoom)+"&size=640x470&scale=1&maptype=hybrid&key=BLABLA"
+        urlString = "https://maps.googleapis.com/maps/api/staticmap?center="+str(lat)+","+str(lnt)+"&zoom="+str(zoom)+"&size=640x470&scale=1&maptype=hybrid&key=AIzaSyABk_xoTQbteDX7TmSvQD4zYcoQGXFNPIs"
         imageFromWeb = urllib.request.urlopen(urlString).read()
         self.qPixmapWebVar = QPixmap()
         self.qPixmapWebVar.loadFromData(imageFromWeb)
