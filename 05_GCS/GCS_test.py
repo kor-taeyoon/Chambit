@@ -10,6 +10,8 @@ from PyQt5.QtGui import *
 from PyQt5.QtSerialPort import *
 from PyQt5 import uic
 import serial
+import telegram
+from telegram.ext import Updater, MessageHandler, Filters, CommandHandler
 
 # Global variables
 form_class = uic.loadUiType("GCS_test.ui")[0]
@@ -17,6 +19,12 @@ lat = 37.619583
 lnt = 127.058854
 zoom = 16
 ser = 0
+
+chambit_bot_token = "1659260389:AAH75dY5WYsR3-RqA8T2QQ6U2094vDlxBe8"
+bot = telegram.Bot(token = chambit_bot_token)
+
+
+
 
 class WindowClass(QMainWindow, form_class):
     def __init__(self):
@@ -45,9 +53,12 @@ class WindowClass(QMainWindow, form_class):
         self.btn_gps_down.pressed.connect(self.func_btn_gps_down)
         self.btn_gps_left.pressed.connect(self.func_btn_gps_left)
         self.btn_gps_right.pressed.connect(self.func_btn_gps_right)
+        self.btn_gps_in.pressed.connect(self.func_btn_gps_in)
+        self.btn_gps_out.pressed.connect(self.func_btn_gps_out)
 
         # tmp for develop
         self.temp_send.pressed.connect(self.sendtest)
+        self.temp_btn_alert.pressed.connect(self.alerttest)
 
         # serial port table
         self.btn_port_refresher.pressed.connect(self.port_refresh)
@@ -58,6 +69,9 @@ class WindowClass(QMainWindow, form_class):
         self.btn_stream.pressed.connect(self.web_stream_start)
 
         self.web_gps_refresh()
+
+
+
 
 
     def port_refresh(self):
@@ -80,17 +94,25 @@ class WindowClass(QMainWindow, form_class):
         ser = serial.Serial(self.table_port.currentItem().text(), 9600)
 
     def sendtest(self):
+        global ser
         if type(ser) == int:
-            return
-        op = 'f'
-        op = op.encode('utf-8')
-        ser.write(op)
+            return -1
+        try:
+            ser.write("f".encode())
+        except:
+            ser.close()
+            print("not available port")
+
+    def alerttest(self):
+        bot.send_message(chat_id=369780090, text="불난것 같음!")
+        bot.send_message(chat_id=369780090, text="위도 : 37.619583  경도 : 127.058854")
+        bot.send_photo(chat_id=369780090, photo=open("./doraemon_machine.jpg", "rb"))
+        
         
     
 
-
     def func_btn_autopilot(self):
-        if(self.btn_autopilot.isChecked()):
+        if self.btn_autopilot.isChecked():
             self.btn_autopilot.toggle()
             return
         self.btn_manualpilot.toggle()
@@ -100,7 +122,7 @@ class WindowClass(QMainWindow, form_class):
         self.btn_right.setEnabled(False)
 
     def func_btn_manualpilot(self):
-        if(self.btn_manualpilot.isChecked()):
+        if self.btn_manualpilot.isChecked():
             self.btn_manualpilot.toggle()
             return
         self.btn_autopilot.toggle()
@@ -109,31 +131,69 @@ class WindowClass(QMainWindow, form_class):
         self.btn_left.setEnabled(True)
         self.btn_right.setEnabled(True)
 
-
-
     def func_btn_forward(self):
         print("forward go")
+        try:
+            ser.write("f".encode())
+        except:
+            ser.close()
+            print("not available port")
 
     def func_btn_forward_(self):
         print("forward stop")
+        try:
+            ser.write("E".encode())
+        except:
+            ser.close()
+            print("not available port")
 
     def func_btn_backward(self):
         print("backward go")
+        try:
+            ser.write("f".encode())
+        except:
+            ser.close()
+            print("not available port")
 
     def func_btn_backward_(self):
         print("backward stop")
+        try:
+            ser.write("E".encode())
+        except:
+            ser.close()
+            print("not available port")
 
     def func_btn_left(self):
         print("left go")
+        try:
+            ser.write("f".encode())
+        except:
+            ser.close()
+            print("not available port")
 
     def func_btn_left_(self):
         print("left stop")
+        try:
+            ser.write("E".encode())
+        except:
+            ser.close()
+            print("not available port")
     
     def func_btn_right(self):
         print("right go")
+        try:
+            ser.write("f".encode())
+        except:
+            ser.close()
+            print("not available port")
         
     def func_btn_right_(self):
         print("right stop")
+        try:
+            ser.write("E".encode())
+        except:
+            ser.close()
+            print("not available port")
     
     def func_btn_stop(self):
         if(self.btn_autopilot.isChecked()):
@@ -143,7 +203,12 @@ class WindowClass(QMainWindow, form_class):
             self.btn_backward.setEnabled(True)
             self.btn_left.setEnabled(True)
             self.btn_right.setEnabled(True)
-        #Send Emergency Stop Signal
+        try:
+            ser.write("E".encode())
+        except:
+            ser.close()
+            print("not available port")
+
 
 
 
@@ -159,7 +224,6 @@ class WindowClass(QMainWindow, form_class):
             self.btn_gps_down.setEnabled(False)
             self.btn_gps_left.setEnabled(False)
             self.btn_gps_right.setEnabled(False)
-
 
     def func_btn_gps_up(self):
         global lat
@@ -184,15 +248,20 @@ class WindowClass(QMainWindow, form_class):
         print("right go")
         lnt+=0.001
         self.web_gps_refresh()
-        
 
+    def func_btn_gps_in(self):
+        global zoom
+        zoom+=1
+        self.web_gps_refresh()
 
-
-
+    def func_btn_gps_out(self):
+        global zoom
+        zoom-=1
+        self.web_gps_refresh()
 
     def web_gps_refresh(self):
         global lat, lnt, zoom
-        urlString = "https://maps.googleapis.com/maps/api/staticmap?center="+str(lat)+","+str(lnt)+"&zoom="+str(zoom)+"&size=640x470&scale=1&maptype=hybrid&key="
+        urlString = "https://maps.googleapis.com/maps/api/staticmap?center="+str(lat)+","+str(lnt)+"&zoom="+str(zoom)+"&size=640x470&scale=1&maptype=hybrid&key=AIzaSyABk_xoTQbteDX7TmSvQD4zYcoQGXFNPIs"
         imageFromWeb = urllib.request.urlopen(urlString).read()
         self.qPixmapWebVar = QPixmap()
         self.qPixmapWebVar.loadFromData(imageFromWeb)
@@ -200,25 +269,30 @@ class WindowClass(QMainWindow, form_class):
         self.image_gps.setPixmap(self.qPixmapWebVar)
 
     def web_gps_refresh_loop(self):
-        global auto, lat, lnt, zoom
+        global lat, lnt, zoom
         while(1):
             if self.btn_gps_refresh.isChecked():
                 self.web_gps_refresh()
                 lat+=0.0002
                 lnt+=0.0002
-                time.sleep(1)
+                time.sleep(2)
+
+
+
 
 
     def web_stream_start(self):
-        self.web_stream.load(QUrl("192.168.0.25:8090/?action=stream"))
+        self.web_stream.load(QUrl("http://192.168.60.142:8090/?action=stream"))
 
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     myWindow = WindowClass()
     myWindow.show()
-    thread = threading.Thread(target=myWindow.web_gps_refresh_loop, daemon=True)
-    thread.start()
+
+    thread1 = threading.Thread(target=myWindow.web_gps_refresh_loop, daemon=True)
+    thread1.start()
+    
     app.exec_()
 
 
