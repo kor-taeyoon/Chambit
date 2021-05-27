@@ -20,7 +20,7 @@ lnt = 127.058854
 zoom = 16
 ser = 0
 
-chambit_bot_token = "1659260389:AAH75dY5WYsR3-RqA8T2QQ6U2094vDlxBe8"
+chambit_bot_token = ""
 bot = telegram.Bot(token = chambit_bot_token)
 
 
@@ -261,7 +261,7 @@ class WindowClass(QMainWindow, form_class):
 
     def web_gps_refresh(self):
         global lat, lnt, zoom
-        urlString = "https://maps.googleapis.com/maps/api/staticmap?center="+str(lat)+","+str(lnt)+"&zoom="+str(zoom)+"&size=640x470&scale=1&maptype=hybrid&key=AIzaSyABk_xoTQbteDX7TmSvQD4zYcoQGXFNPIs"
+        urlString = "https://maps.googleapis.com/maps/api/staticmap?center="+str(lat)+","+str(lnt)+"&zoom="+str(zoom)+"&size=640x470&scale=1&maptype=hybrid&key="
         imageFromWeb = urllib.request.urlopen(urlString).read()
         self.qPixmapWebVar = QPixmap()
         self.qPixmapWebVar.loadFromData(imageFromWeb)
