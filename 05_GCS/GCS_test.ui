@@ -27,7 +27,7 @@
   </property>
   <property name="windowIcon">
    <iconset>
-    <normaloff>icon.jpg</normaloff>icon.jpg</iconset>
+    <normaloff>doraemon_space.jpg</normaloff>doraemon_space.jpg</iconset>
   </property>
   <property name="layoutDirection">
    <enum>Qt::LeftToRight</enum>
@@ -164,6 +164,19 @@
      </property>
     </widget>
    </widget>
+   <widget class="QPushButton" name="temp_btn_alert">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>180</y>
+      <width>51</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Alert</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QGroupBox" name="groupBox">
    <property name="geometry">
@@ -201,19 +214,6 @@
     </property>
     <property name="text">
      <string>Auto</string>
-    </property>
-   </widget>
-   <widget class="QSlider" name="slide_gps_zoom">
-    <property name="geometry">
-     <rect>
-      <x>610</x>
-      <y>270</y>
-      <width>22</width>
-      <height>191</height>
-     </rect>
-    </property>
-    <property name="orientation">
-     <enum>Qt::Vertical</enum>
     </property>
    </widget>
    <widget class="QPushButton" name="btn_gps_right">
@@ -266,6 +266,32 @@
     </property>
     <property name="text">
      <string>▲</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_gps_out">
+    <property name="geometry">
+     <rect>
+      <x>600</x>
+      <y>440</y>
+      <width>41</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>-</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_gps_in">
+    <property name="geometry">
+     <rect>
+      <x>600</x>
+      <y>400</y>
+      <width>41</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>+</string>
     </property>
    </widget>
   </widget>
